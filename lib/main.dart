@@ -61,12 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Column(
       children: [
+        Container(
+          height: 500,
+        ),
         VanBadge(
             child: VanButton(
+          icon: Icons.sanitizer,
+          loading: false,
           onClick: () {
             print('测试');
           },
-          text: '测试6',
+          text: '测试6123131231',
         ))
       ],
     ));

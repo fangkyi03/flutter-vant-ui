@@ -31,8 +31,6 @@ class VanButton extends StatefulWidget {
   final bool block;
   // 是否简洁模式
   final bool plain;
-  // 图标
-  final dynamic icon;
   // loading
   final bool loading;
   // loading提示
@@ -47,6 +45,12 @@ class VanButton extends StatefulWidget {
   final bool hairline;
   // 内容
   final String text;
+  // icon颜色
+  final dynamic iconColor;
+  // icon大小
+  final dynamic iconSize;
+  // 图标
+  final dynamic icon;
   // 点击事件
   final GestureTapCallback onClick;
   @override
@@ -59,11 +63,13 @@ class VanButton extends StatefulWidget {
       this.loadingText,
       this.text,
       this.onClick,
+      this.iconColor,
       this.disabled = false,
       this.hairline = false,
       this.iconPosition = 'left',
       this.loadingSize = 15,
       this.size = 'small',
+      this.iconSize = 20.0,
       this.loading = false,
       this.round = false,
       this.square = false,
@@ -139,43 +145,52 @@ class _VanButtonState extends State<VanButton> {
 
   getIconColor() {
     Map obj = {
-      VanButtonType.normal: Colors.white,
+      VanButtonType.normal: Colors.black,
       VanButtonType.warning: '#ff976a',
       VanButtonType.danger: '#ee0a24',
       VanButtonType.primary: '#1989fa',
       VanButtonType.success: '#07c160'
     };
+    if (widget.iconColor != null) return HexColor(widget.iconColor);
     if (widget.plain == true) {
       return HexColor(obj[widget.type]);
     } else {
-      return Colors.white;
+      if (widget.type == VanButtonType.normal) {
+        return Colors.black;
+      } else {
+        return Colors.white;
+      }
     }
   }
 
-  renderIcon(dynamic icon) {
+  renderIcon(String position) {
     Widget element;
-    if (icon.runtimeType.toString() == 'String' && icon.indexOf('http') != -1) {
+    if (widget.iconPosition != position) return Container();
+    if (widget.icon.runtimeType.toString() == 'String' &&
+        widget.icon.indexOf('http') != -1) {
       element = Image(
-        width: getSize(size: 20.0),
-        height: getSize(size: 20.0),
-        image: NetworkImage(icon),
+        width: getSize(size: widget.iconSize),
+        height: getSize(size: widget.iconSize),
+        image: NetworkImage(widget.icon),
         fit: BoxFit.cover,
       );
     } else {
-      element = Icon(icon, color: getIconColor(), size: 20.0);
+      element = Icon(widget.icon,
+          color: getIconColor(), size: getSize(size: widget.iconSize));
     }
     return View(
       styles: {
         CssRule.marginLeft: 5.0,
         CssRule.marginRight: 5.0,
-        CssRule.width: 20.0,
-        CssRule.height: 20.0
+        CssRule.width: widget.iconSize,
+        CssRule.height: widget.iconSize
       },
       children: [element],
     );
   }
 
   renderLoading() {
+    if (!widget.loading) return Container();
     return View(
       styles: {
         CssRule.marginRight: 5.0,
@@ -196,29 +211,33 @@ class _VanButtonState extends State<VanButton> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  renderContent() {
+    return TextView(
+      widget.loading ? widget.loadingText ?? widget.text : widget.text,
+      styles: {CssRule.fontWeight: 0, CssRule.fontSize: 15.0},
+    );
+  }
+
+  getMainClass() {
     Map css = {
       'button': true,
       'btn-block': widget.block,
       'btn-${widget.type}': true,
       'btn-size-${widget.size}': widget.size != null,
     };
-    final buttonStyle = StylesMap.getClass(css, getStyles());
-    final iconView = widget.icon != null && widget.loading == false
-        ? this.renderIcon(widget.icon)
-        : Container();
+    return StylesMap.getClass(css, getStyles());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return View(
-      styles: buttonStyle,
+      styles: getMainClass(),
       onClick: widget.onClick,
       children: [
-        widget.iconPosition == 'left' ? iconView : Container(),
-        widget.loading ? this.renderLoading() : Container(),
-        TextView(
-          widget.loading ? widget.loadingText ?? widget.text : widget.text,
-          styles: {CssRule.fontWeight: 0, CssRule.fontSize: 15.0},
-        ),
-        widget.iconPosition == 'right' ? iconView : Container()
+        renderIcon('left'),
+        renderLoading(),
+        renderContent(),
+        renderIcon('right')
       ],
     );
   }
