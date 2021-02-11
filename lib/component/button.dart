@@ -165,7 +165,7 @@ class _VanButtonState extends State<VanButton> {
 
   renderIcon(String position) {
     Widget element;
-    if (widget.iconPosition != position) return Container();
+    if (widget.iconPosition != position || widget.icon == null) return Container();
     if (widget.icon.runtimeType.toString() == 'String' &&
         widget.icon.indexOf('http') != -1) {
       element = Image(

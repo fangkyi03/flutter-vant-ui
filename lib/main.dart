@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vant/component/cell.dart';
-import 'package:flutter_vant/component/cellGroup.dart';
+import 'package:flutter_vant/component/button.dart';
+import 'package:flutter_vant/component/popup.dart';
 import 'package:rlstyles/main.dart';
 
 void main() {
@@ -34,16 +34,26 @@ class _MyHomePageState extends State<MyHomePage> {
   getStyle() {
     return {
       'main':{
-        CssRule.justifyContent:'center',
-        CssRule.alignItems:'center'
+        CssRule.paddingTop:100
       }
     };
+  }
+
+  onClick() {
+    VanPopup.show(context: context,option: VanPopupOption(
+      round: true,
+      overlayStyle: {
+        CssRule.height:400,
+        CssRule.borderTopLeftRadius:20
+      }
+    ));
   }
 
   renderBody() {
     return Scaffold(body: View(
       styles: getStyle()['main'],
       children: [
+        VanButton(text: '点击打开pop',onClick: onClick,)
       ],
     ));
   }
