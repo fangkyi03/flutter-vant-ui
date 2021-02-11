@@ -13,7 +13,7 @@ class VanBadge extends StatefulWidget {
   // 图标尺寸
   final dynamic size;
   // 主样式
-  final Map className;
+  final Map<String,dynamic> className;
   // dot样式
   final Map dotClass;
   // badge样式

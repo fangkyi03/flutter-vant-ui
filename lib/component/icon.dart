@@ -16,12 +16,12 @@ class VanIcon extends StatefulWidget {
   // 图标尺寸
   final dynamic size;
   // className
-  final Map className;
+  final Map<String,dynamic> className;
   const VanIcon(
       {this.name,
       this.dot,
       this.badge,
-      this.className,
+      this.className = const {},
       this.size = 20,
       this.color = '#000000'});
   @override
@@ -51,6 +51,7 @@ class _VanIconState extends State<VanIcon> {
       dot: widget.dot,
       badge: widget.badge,
       size: widget.size,
+      className: widget.className,
       child: renderIcon(),
     );
   }

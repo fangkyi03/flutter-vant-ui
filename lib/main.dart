@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
           styles: {
             CssRule.width:300,
           },
-          children:[VanCellGroup(children: renderCell())],
+          children:[VanCellGroup(children: renderCell(),icon: Icons.search,title: '测试',)],
         )
       ],
     ));

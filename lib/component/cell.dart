@@ -57,8 +57,8 @@ class VanCell extends StatefulWidget {
     this.required, 
     this.center, 
     this.arrowDirection, 
-    this.titleStyle, 
-    this.valueStyle, 
+    this.titleStyle = const {}, 
+    this.valueStyle = const {}, 
     this.labelStyle = const {},
     this.slot = const {},
   });
