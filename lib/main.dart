@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/badge.dart';
 import 'package:flutter_vant/component/button.dart';
-import 'package:flutter_vant/component/icon.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
 
@@ -32,49 +31,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int num = 98;
-  getStyle() {
-    return {
-      'main': {
-        CssRule.flexDirection: 'row',
-        CssRule.alignItems: 'center',
-        CssRule.justifyContent: 'center',
-        CssRule.height: 500,
-        CssRule.width: 300,
-        CssRule.display: 'flex',
-        CssRule.position: 'rel',
-        CssRule.paddingTop: 80.0
-      }
-    };
-  }
-
-  onShowLoading() {
-    Toast(
-        context: context,
-        option: VanToastOption(message: '测试111', type: VanToastType.success));
-    this.setState(() {
-      num = num + 1;
-    });
-  }
-
   renderBody() {
-    return Scaffold(
-        body: Column(
-      children: [
-        Container(
-          height: 500,
-        ),
-        VanBadge(
-            child: VanButton(
-          icon: Icons.sanitizer,
-          loading: false,
-          onClick: () {
-            print('测试');
-          },
-          text: '测试6123131231',
-        ))
-      ],
-    ));
+    return Scaffold(body: view());
+  }
+
+  View view() {
+    return View(
+      styles: {
+        CssRule.justifyContent: 'center',
+        CssRule.alignItems: 'center',
+        CssRule.backgroundColor: 'red',
+        CssRule.flexDirection: 'row',
+        CssRule.width: double.infinity,
+        CssRule.height: double.infinity
+      },
+      children: [vanBadge()],
+    );
+  }
+
+  VanBadge vanBadge() {
+    return VanBadge(size: 150, child: vanButton());
+  }
+
+  VanButton vanButton() {
+    return VanButton(
+      icon: Icons.sanitizer,
+      loading: false,
+      onClick: () {
+        print('测试');
+      },
+      text: '测试6123131231',
+    );
   }
 
   renderView() {
