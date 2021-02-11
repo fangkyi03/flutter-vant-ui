@@ -9,7 +9,7 @@ class VanCellGroup extends StatefulWidget {
   final String title;
   final dynamic icon;
   final List<VanCell> children;
-  const VanCellGroup({this.title,this.children,this.icon});
+  const VanCellGroup({this.title,this.children = const [],this.icon});
   @override
   _VanCellGroupState createState() => _VanCellGroupState();
 }

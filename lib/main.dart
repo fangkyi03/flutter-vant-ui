@@ -40,35 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
     };
   }
 
-  renderCellTitle() {
-    return Text('测试1123131');
-  }
-
-  renderCellLabel() {
-    return Text('测试描述');
-  }
-
-  List<VanCell> renderCell() {
-    return List.generate(10, (index) => VanCell(
-      title: 'ceshi',
-      value: '右侧',
-      label: '描述',
-      center: true,
-      isLink: true,
-      icon: Icons.search,
-    )).toList();
-  }
-
   renderBody() {
     return Scaffold(body: View(
       styles: getStyle()['main'],
       children: [
-        View(
-          styles: {
-            CssRule.width:300,
-          },
-          children:[VanCellGroup(children: renderCell(),icon: Icons.search,title: '测试',)],
-        )
       ],
     ));
   }
