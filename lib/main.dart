@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:rlstyles/main.dart';
@@ -40,13 +41,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    VanPopup.show(context: context,option: VanPopupOption(
+    VanActionSheet.show(context:context,option:VanActionSheetOption(
       round: true,
-      overlayStyle: {
-        CssRule.height:400,
-        CssRule.borderTopLeftRadius:20
-      }
+      description: '描述信息测试',
+      cancelText:'取消测试',
+      actions: [
+        VanActionSheetAction(name: '测试1'),
+        VanActionSheetAction(name: '测试2'),
+        VanActionSheetAction(name: '测试3')
+      ],
     ));
+    // VanPopup.show(context: context,option: VanPopupOption(
+    //   round: true,
+    //   position: 'bottom',
+    // ));
   }
 
   renderBody() {
