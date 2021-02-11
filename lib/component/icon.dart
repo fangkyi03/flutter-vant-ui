@@ -46,6 +46,7 @@ class _VanIconState extends State<VanIcon> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.name == null ) return Container();
     return VanBadge(
       dot: widget.dot,
       badge: widget.badge,

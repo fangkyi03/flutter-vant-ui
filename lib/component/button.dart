@@ -56,7 +56,7 @@ class VanButton extends StatefulWidget {
   @override
   _VanButtonState createState() => _VanButtonState();
 
-  VanButton(
+  const VanButton(
       {this.type = 'default',
       this.className,
       this.icon,
@@ -238,7 +238,7 @@ class _VanButtonState extends State<VanButton> {
         renderLoading(),
         renderContent(),
         renderIcon('right')
-      ],
+      ]
     );
   }
 }

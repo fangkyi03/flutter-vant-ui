@@ -35,12 +35,12 @@ class _VanBadgeState extends State<VanBadge> {
   getStyle() {
     return {
       'main': {
-        CssRule.width: widget.size != null
-            ? widget.size + widget.badge.toString().length * 7
-            : null,
+        CssRule.width: widget.size != null && widget.badge != null 
+          ? widget.size + widget.badge.toString().length * 7
+          : null,
         CssRule.height: widget.size != null
-            ? widget.size + (widget.badge != null ? 10.0 : 3.0)
-            : null,
+          ? widget.size + (widget.badge != null ? 10.0 : 3.0)
+          : null,
         CssRule.paddingRight: 3.0,
         CssRule.paddingTop: 3.0,
         CssRule.justifyContent: 'flex-end',
@@ -90,11 +90,10 @@ class _VanBadgeState extends State<VanBadge> {
   }
 
   renderBadge() {
-    if (!widget.dot && widget.badge == null) {
+    if (widget.dot == null && widget.badge == null) {
       return Container();
     }
-    final cls = StylesMap.getClass(
-        {'dot': widget.dot, 'badge': widget.badge != null}, getStyle());
+    final cls = StylesMap.getClass({'dot': widget.dot, 'badge': widget.badge != null}, getStyle());
     return View(
       styles: cls,
       children: [widget.badge != null ? TextView(getBadge()) : Container()],

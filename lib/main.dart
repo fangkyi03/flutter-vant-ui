@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vant/component/badge.dart';
-import 'package:flutter_vant/component/button.dart';
-import 'package:flutter_vant/component/toast.dart';
+import 'package:flutter_vant/component/cell.dart';
+import 'package:flutter_vant/component/cellGroup.dart';
 import 'package:rlstyles/main.dart';
 
 void main() {
@@ -31,37 +30,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  getStyle() {
+    return {
+      'main':{
+        CssRule.justifyContent:'center',
+        CssRule.alignItems:'center'
+      }
+    };
+  }
+
+  renderCellTitle() {
+    return Text('测试1123131');
+  }
+
+  renderCellLabel() {
+    return Text('测试描述');
+  }
+
+  List<VanCell> renderCell() {
+    return List.generate(10, (index) => VanCell(
+      title: 'ceshi',
+      value: '右侧',
+      label: '描述',
+      center: true,
+      isLink: true,
+      icon: Icons.search,
+    )).toList();
+  }
+
   renderBody() {
-    return Scaffold(body: view());
-  }
-
-  View view() {
-    return View(
-      styles: {
-        CssRule.justifyContent: 'center',
-        CssRule.alignItems: 'center',
-        CssRule.backgroundColor: 'red',
-        CssRule.flexDirection: 'row',
-        CssRule.width: double.infinity,
-        CssRule.height: double.infinity
-      },
-      children: [vanBadge()],
-    );
-  }
-
-  VanBadge vanBadge() {
-    return VanBadge(size: 150, child: vanButton());
-  }
-
-  VanButton vanButton() {
-    return VanButton(
-      icon: Icons.sanitizer,
-      loading: false,
-      onClick: () {
-        print('测试');
-      },
-      text: '测试6123131231',
-    );
+    return Scaffold(body: View(
+      styles: getStyle()['main'],
+      children: [
+        View(
+          styles: {
+            CssRule.width:300,
+          },
+          children:[VanCellGroup(children: renderCell())],
+        )
+      ],
+    ));
   }
 
   renderView() {
