@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
+import 'package:flutter_vant/component/notify.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:rlstyles/main.dart';
 
@@ -41,16 +42,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    VanActionSheet.show(context:context,option:VanActionSheetOption(
-      round: true,
-      description: '描述信息测试',
-      cancelText:'取消测试',
-      actions: [
-        VanActionSheetAction(name: '测试1'),
-        VanActionSheetAction(name: '测试2'),
-        VanActionSheetAction(name: '测试3')
-      ],
-    ));
+    VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
+    // VanActionSheet.show(context:context,option:VanActionSheetOption(
+    //   round: true,
+    //   description: '描述信息测试',
+    //   cancelText:'取消测试',
+    //   actions: [
+    //     VanActionSheetAction(name: '测试1'),
+    //     VanActionSheetAction(name: '测试2'),
+    //     VanActionSheetAction(name: '测试3')
+    //   ],
+    // ));
     // VanPopup.show(context: context,option: VanPopupOption(
     //   round: true,
     //   position: 'bottom',
