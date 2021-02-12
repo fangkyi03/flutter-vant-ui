@@ -45,8 +45,8 @@ class VanPopup extends StatefulWidget {
   @override
   _VanPopupState createState() => _VanPopupState();
 
-  static show({BuildContext context,VanPopupOption option}) {
-    VanOverlay.show(context:context,child: VanPopup(option: option));
+  static OverlayEntry show({BuildContext context,VanPopupOption option}) {
+    return VanOverlay.show(context:context,child: VanPopup(option: option));
   }
 
   static remove() {

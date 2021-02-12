@@ -75,9 +75,6 @@ class VanActionSheet extends StatefulWidget {
         overlay:option.overlay,
         isShowHeader: false,
         position: 'bottom',
-        // overlayStyle:{
-        //   CssRule.minHeight:500
-        // },
         child: VanActionSheet(option: option)
       )
     );
