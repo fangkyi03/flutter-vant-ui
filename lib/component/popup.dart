@@ -21,9 +21,12 @@ class VanPopupOption {
   final Widget child;
   // 是否显示头部
   final bool isShowHeader;
+  // 标题
+  final String title;
   const VanPopupOption({
     this.position = 'left',
     this.child,
+    this.title,
     this.isShowHeader = true,
     this.overlay = false,
     this.safeAreaInsetBottom = false,
@@ -137,7 +140,7 @@ class _VanPopupState extends State<VanPopup> {
       styles: getStyle()['header'],
       children: [
         renderHeaderClose(),
-        TextView('标题')
+        TextView(widget.option.title ?? '标题')
       ]
     );
   }

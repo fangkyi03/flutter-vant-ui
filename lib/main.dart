@@ -42,21 +42,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
-    // VanActionSheet.show(context:context,option:VanActionSheetOption(
-    //   round: true,
-    //   description: '描述信息测试',
-    //   cancelText:'取消测试',
-    //   actions: [
-    //     VanActionSheetAction(name: '测试1'),
-    //     VanActionSheetAction(name: '测试2'),
-    //     VanActionSheetAction(name: '测试3')
-    //   ],
-    // ));
-    // VanPopup.show(context: context,option: VanPopupOption(
-    //   round: true,
-    //   position: 'bottom',
-    // ));
+    // VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
+    // // VanActionSheet.show(context:context,option:VanActionSheetOption(
+    // //   round: true,
+    // //   description: '描述信息测试',
+    // //   cancelText:'取消测试',
+    // //   actions: [
+    // //     VanActionSheetAction(name: '测试1'),
+    // //     VanActionSheetAction(name: '测试2'),
+    // //     VanActionSheetAction(name: '测试3')
+    // //   ],
+    // // ));
+    VanPopup.show(context: context,option: VanPopupOption(
+      round: true,
+      position: 'bottom',
+      title:'测试',
+      child: TextView('测试')
+    ));
   }
 
   renderBody() {
