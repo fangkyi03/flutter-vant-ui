@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:rlstyles/Component/CssRule.dart';
+import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
-
+import 'package:flutter_daydart/flutter_daydart.dart';
 
 class VanCalendarOption {
     // 选择类型:
@@ -85,8 +87,9 @@ class VanCalendar extends StatefulWidget {
       option:VanPopupOption(
         round: true,
         overlay:true,
-        isShowHeader: false,
+        isShowHeader: true,
         position: 'bottom',
+        title: option.title,
         overlayStyle: {
           CssRule.height:500
         },
@@ -106,9 +109,71 @@ class _VanCalendarState extends State<VanCalendar> {
   getStyles() {
     return {
       'main':{
-
+        // CssRule.height:450,
+        // CssRule.width:double.infinity,
+      },
+      'header':{
+        CssRule.width:double.infinity,
+        CssRule.height:50,
+        CssRule.alignItems:'center',
+        CssRule.justifyContent:'center',
+        CssRule.fontSize:12,
+        CssRule.color:'#333333'
+      },
+      'week':{
+        CssRule.flexDirection:'row',
+        CssRule.alignItems:'center',
+        CssRule.height:30,
+        CssRule.width:double.infinity,
+        CssRule.borderBottomColor:Colors.black.withOpacity(0.5),
+        CssRule.borderBottomWidth:0.5,
+        CssRule.borderBottomStyle:'solid'
+      },
+      'week-item':{
+        CssRule.alignItems:'center',
+        CssRule.justifyContent:'center',
+        CssRule.flex:1,
+        CssRule.fontSize:12
       }
     };
+  }
+
+  getHeaderName() {
+    return DayDart().format(fm: 'YYYY-MM-DD');
+  }
+
+  renderHeader() {
+    return View(
+      styles: getStyles()['header'],
+      children: [
+        TextView(getHeaderName())
+      ]
+    );
+  }
+
+  renderWeek() {
+    List<String> week = ['日','一','二','三','四','五','六'];
+    return View(
+      styles: getStyles()['week'],
+      children: week.map((e){
+        return View(styles: getStyles()['week-item'],children: [TextView(e)]);
+      }).toList(),
+    );
+  }
+
+  Widget renderListItem(BuildContext context,int index) {
+    return TextView(index.toString());
+  }
+
+  renderList() {
+    return Expanded(
+      flex: 1, 
+      child: ListView.builder(
+        itemBuilder: renderListItem,
+        itemCount: 100,
+        shrinkWrap:true
+      )
+    );
   }
 
   @override
@@ -116,7 +181,12 @@ class _VanCalendarState extends State<VanCalendar> {
     return View(
       styles: getStyles()['main'],
       children: [
-
+        // 日历头部 用于显示当前时间
+        renderHeader(),
+        // 星期日期
+        renderWeek(),
+        // 日历
+        renderList()
       ]
     );
   }

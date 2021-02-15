@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
+import 'package:flutter_vant/component/calendar.dart';
 import 'package:flutter_vant/component/icon.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:flutter_vant/component/toast.dart';
@@ -46,10 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    Toast.loading(context, VanToastOption(
-      message: '测试',
-      position: VanToastPosition.top,
+    VanCalendar.show(context: context,option: VanCalendarOption(
+      title: '日历'
     ));
+    // Toast.loading(context, VanToastOption(
+    //   message: '测试',
+    //   position: VanToastPosition.top,
+    // ));
     // Toast(context: context,option: VanToastOption(message: '测试',type: VanToastType.fail));
     // VanActionSheet.show(context:context,option:VanActionSheetOption(
     //   round: true,

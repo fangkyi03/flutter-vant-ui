@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   rlstyles: 
     path: /Users/lv/Desktop/flutter-rlstyle
-
+  flutter_daydart: ^0.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

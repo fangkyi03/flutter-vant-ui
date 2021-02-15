@@ -177,7 +177,7 @@ class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
       },
       children: [
         renderHeader(),
-        widget.option.child ?? Container()
+        Expanded(flex: 1,child: widget.option.child ?? Container())
       ],
     );
   }
@@ -218,7 +218,7 @@ class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
           right: getSize(size:getPositionStyle()['right'],defValue: null), 
           bottom: getSize(size:getPositionStyle()['bottom'],defValue: null), 
           top: getSize(size:getPositionStyle()['top'],defValue: null), 
-          duration: Duration(milliseconds: 700),
+          duration: Duration(milliseconds: 500),
           child: renderPop(),
           onEnd: onAnimateEnd,
         )
