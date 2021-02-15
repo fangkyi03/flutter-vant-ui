@@ -205,8 +205,8 @@ class _VanButtonState extends State<VanButton> {
             height: widget.loadingSize,
             child: CircularProgressIndicator(
               strokeWidth: 1,
-              valueColor: AlwaysStoppedAnimation(Colors.white),
-            ))
+              valueColor: AlwaysStoppedAnimation(Colors.white))
+        )
       ],
     );
   }

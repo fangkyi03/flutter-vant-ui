@@ -3,6 +3,7 @@ import 'package:rlstyles/Component/CssRule.dart';
 import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
+import 'package:rlstyles/main.dart';
 
 class VanBadge extends StatefulWidget {
   final Widget child;
@@ -18,15 +19,19 @@ class VanBadge extends StatefulWidget {
   final Map dotClass;
   // badge样式
   final Map badgeClass;
-
+  // 子元素名称
+  final Widget content;
   const VanBadge(
-      {this.child,
+    {
+      this.child,
       this.dot = false,
       this.badge,
       this.size,
+      this.content,
       this.badgeClass = const {},
       this.dotClass = const {},
-      this.className = const {}});
+      this.className = const {}
+    });
   @override
   _VanBadgeState createState() => _VanBadgeState();
 }
@@ -35,12 +40,12 @@ class _VanBadgeState extends State<VanBadge> {
   getStyle() {
     return {
       'main': {
-        CssRule.width: widget.size != null && widget.badge != null 
-          ? widget.size + widget.badge.toString().length * 7
-          : null,
+        CssRule.width: widget.size != null
+        ? widget.size + (widget.badge != null ? widget.badge.toString().length * 7 : 0.0)
+        : null,
         CssRule.height: widget.size != null
-          ? widget.size + (widget.badge != null ? 10.0 : 3.0)
-          : null,
+        ? getSize(size:widget.size) + (widget.badge != null ? 10.0 : 3.0) + (widget.content != null ? 20.0 : 0.0)
+        : null,
         CssRule.paddingRight: 3.0,
         CssRule.paddingTop: 3.0,
         CssRule.justifyContent: 'flex-end',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
+import 'package:flutter_vant/component/icon.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
@@ -45,6 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
+    Toast.fail(context, VanToastOption(
+      message: '测试',
+      position: VanToastPosition.middle,
+      overlay: true
+    ));
+    // Toast(context: context,option: VanToastOption(message: '测试',type: VanToastType.fail));
     // VanActionSheet.show(context:context,option:VanActionSheetOption(
     //   round: true,
     //   description: '描述信息测试',
@@ -55,12 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
     //     VanActionSheetAction(name: '测试3')
     //   ],
     // ));
-    VanPopup.show(context: context,option: VanPopupOption(
-      round: true,
-      position: 'bottom',
-      title:'测试',
-      child: TextView('测试')
-    ));   
+    // VanPopup.show(context: context,option: VanPopupOption(
+    //   round: true,
+    //   position: 'bottom',
+    //   title:'测试',
+    //   child: TextView('测试')
+    // ));   
     // VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
   }
 
