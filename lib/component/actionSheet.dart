@@ -142,6 +142,9 @@ class _VanActionSheetState extends State<VanActionSheet> {
     if (item.loading == true) return renderLoading();
     return View(
       styles: {...getStyles()['list-item'],CssRule.color:item.color},
+      onClick: (){
+        print('点击');
+      },
       children: [
         TextView('child'),
         item.subname != null ? TextView(item.subname,styles: getStyles()['list-item-desc']) : Container()
@@ -175,6 +178,9 @@ class _VanActionSheetState extends State<VanActionSheet> {
           View(styles: {CssRule.backgroundColor:'#f7f8fa',CssRule.height:8,CssRule.width:double.infinity}),
           View(
             styles: getStyles()['cancelButton'],
+            onClick: (){
+              print('取消按钮被按下');
+            },
             children: [
               TextView(widget.option.cancelText ?? '取消')
             ]

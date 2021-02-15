@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
-import 'package:flutter_vant/component/notify.dart';
 import 'package:flutter_vant/component/popup.dart';
+import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
 
 void main() {
@@ -54,18 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // ));
     VanPopup.show(context: context,option: VanPopupOption(
       round: true,
-      position: 'bottom',
+      position: 'right',
       title:'测试',
       child: TextView('测试')
     ));   
-    VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
+    // VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
   }
 
   renderBody() {
     return Scaffold(body: View(
       styles: getStyle()['main'],
       children: [
-        VanButton(text: '点击打开pop',onClick: onClick,)
+        VanButton(text: '点击打开pop',onClick: onClick),
       ],
     ));
   }

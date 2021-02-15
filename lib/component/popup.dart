@@ -3,6 +3,7 @@ import 'package:flutter_vant/component/overlay.dart';
 import 'package:rlstyles/Component/CssRule.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
+import 'package:rlstyles/main.dart';
 
 class VanPopupOption {
   // 弹出样式
@@ -54,8 +55,21 @@ class VanPopup extends StatefulWidget {
   }
 
 }
+ 
+class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
 
-class _VanPopupState extends State<VanPopup> {
+  bool isOpen = false;
+
+  @override
+  initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 10))
+    .then((value) => 
+      setState(() {
+        isOpen = true;      
+      })
+    );
+  }
 
   getStyle() {
     return {
@@ -145,10 +159,19 @@ class _VanPopupState extends State<VanPopup> {
     );
   }
 
-  
+  getPopStyle() {
+    final Map<String,dynamic> styles = getStyle()['pop-${widget.option.position}'];
+    styles.remove('top');
+    styles.remove('left');
+    styles.remove('right');
+    styles.remove('bottom');
+    styles.remove('position');
+    return styles;
+  }
+
   renderPop() {
     return View(
-      styles: getStyle()['pop-${widget.option.position}'],
+      styles:getPopStyle(),
       onClick: (){
         print('pop');
       },
@@ -161,6 +184,25 @@ class _VanPopupState extends State<VanPopup> {
 
   onCancel() {
     if (widget.option.closeClickOverlay) {
+      setState(() {
+        isOpen = !isOpen;       
+      });
+    }
+  }
+  
+  getPositionStyle() {
+    final Map<String,dynamic> styles = getStyle()['pop-${widget.option.position}'];
+    final double openSize = isOpen ? 0.0 : -450.0;
+    return {
+      'left':widget.option.position == 'left' ? openSize : styles['left'],
+      'top':widget.option.position == 'top' ? openSize :  styles['top'],
+      'right':widget.option.position == 'right' ? openSize :  styles['right'],
+      'bottom':widget.option.position == 'bottom' ? openSize :  styles['bottom']
+    };
+  }
+
+  onAnimateEnd() {
+    if (!isOpen) {
       VanOverlay.remove();
     }
   }
@@ -170,7 +212,15 @@ class _VanPopupState extends State<VanPopup> {
       styles: getStyle()['main'],
       onClick: onCancel,
       children: [
-        renderPop()
+        AnimatedPositioned(
+          left: getSize(size:getPositionStyle()['left'],defValue: null), 
+          right: getSize(size:getPositionStyle()['right'],defValue: null), 
+          bottom: getSize(size:getPositionStyle()['bottom'],defValue: null), 
+          top: getSize(size:getPositionStyle()['top'],defValue: null), 
+          child: renderPop(),
+          duration: Duration(milliseconds: 700),
+          onEnd: onAnimateEnd,
+        )
       ]
     );
   }
