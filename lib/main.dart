@@ -36,7 +36,10 @@ class _MyHomePageState extends State<MyHomePage> {
   getStyle() {
     return {
       'main':{
-        CssRule.paddingTop:100
+        CssRule.justifyContent:'center',
+        CssRule.alignItems:'center',
+        CssRule.width:double.infinity,
+        CssRule.height:double.infinity
       }
     };
   }
@@ -54,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // ));
     VanPopup.show(context: context,option: VanPopupOption(
       round: true,
-      position: 'right',
+      position: 'bottom',
       title:'测试',
       child: TextView('测试')
     ));   
