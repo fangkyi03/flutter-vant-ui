@@ -46,10 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    Toast.fail(context, VanToastOption(
+    Toast.loading(context, VanToastOption(
       message: '测试',
-      position: VanToastPosition.middle,
-      overlay: true
+      position: VanToastPosition.top,
     ));
     // Toast(context: context,option: VanToastOption(message: '测试',type: VanToastType.fail));
     // VanActionSheet.show(context:context,option:VanActionSheetOption(

@@ -38,10 +38,13 @@ class VanToastOption {
   final dynamic onClose;
   // 是否在点击遮罩层后关闭
   final bool closeOnClickOverlay;
+  // 样式
+  final Map<String,dynamic> className;
   VanToastOption({
     this.icon,
     this.message,
     this.type,
+    this.className = const {},
     this.duration = const Duration(milliseconds: 2000),
     this.position = VanToastPosition.top,
     this.overlay,
@@ -67,6 +70,7 @@ class Toast {
         CssRule.width:double.infinity,
         CssRule.height:double.infinity,
         CssRule.backgroundColor:_option.overlay == true ? 'rgba(0, 0, 0, 0.7)': '',
+        ..._option.className
       },
       'toast':{
         CssRule.width:120,
