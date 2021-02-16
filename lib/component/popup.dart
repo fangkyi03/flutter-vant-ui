@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/overlay.dart';
 import 'package:rlstyles/Component/CssRule.dart';
 import 'package:rlstyles/Component/TextView.dart';
@@ -41,23 +40,36 @@ class VanPopupOption {
 class VanPopup extends StatefulWidget {
 
   final VanPopupOption option;
+  static List<GlobalKey> _someKey = [];
+  final Key key;
   VanPopup({
-    this.option = const VanPopupOption()
+    this.option = const VanPopupOption(),
+    this.key
   });
   @override
   _VanPopupState createState() => _VanPopupState();
 
   static OverlayEntry show({BuildContext context,VanPopupOption option}) {
-    return VanOverlay.show(context:context,child: VanPopup(option: option));
+    VanPopup._someKey.add(GlobalKey());
+    return VanOverlay.show(
+      context:context,
+      child: VanPopup(
+        option: option,
+        key:VanPopup._someKey.last
+    ));
   }
 
   static remove() {
     VanOverlay.remove();
+    _someKey.removeLast();
   }
 
+  static close() {
+    (_someKey.last.currentState as _VanPopupState).onCancel();
+  }
 }
  
-class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
+class _VanPopupState extends State<VanPopup> {
 
   bool isOpen = false;
 
@@ -204,7 +216,7 @@ class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
 
   onAnimateEnd() {
     if (!isOpen) {
-      VanOverlay.remove();
+      VanPopup.remove();
     }
   }
 

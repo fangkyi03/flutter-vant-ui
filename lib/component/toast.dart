@@ -46,7 +46,7 @@ class VanToastOption {
     this.type,
     this.className = const {},
     this.duration = const Duration(milliseconds: 2000),
-    this.position = VanToastPosition.top,
+    this.position = VanToastPosition.middle,
     this.overlay,
     this.onOpened,
     this.onClose,
@@ -58,7 +58,6 @@ class Toast {
   static OverlayEntry _overlayEntry; //toast靠它加到屏幕上
   static bool _showing = false; //toast是否正在showing
   static DateTime _startedTime; //开启一个新toast的当前时间，用于对比是否已经展示了足够时间
-  static String _msg;
   static VanToastOption _option;
   Toast({BuildContext context, VanToastOption option}) {
     createToast(context, option);
@@ -149,14 +148,14 @@ class Toast {
   }
 
   static IconData getIconName() {
-      switch (_option.type) {
-        case VanToastType.success:
-          return Icons.done;
-        case VanToastType.fail:
-          return Icons.error_outline;
-        default:
-          return Icons.done;
-      };
+    switch (_option.type) {
+      case VanToastType.success:
+        return Icons.done;
+      case VanToastType.fail:
+        return Icons.error_outline;
+      default:
+        return Icons.done;
+    }
   }
 
   static getIcon() {

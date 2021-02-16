@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
+import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/Component/CssRule.dart';
 import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
 import 'package:flutter_daydart/flutter_daydart.dart';
 
+enum VanCalendarType {
+  single,
+  multiple,
+  range
+}
+
+typedef onConfirmCallBack = void Function(List<String>);
+typedef onSelectCallBack = void Function(List<String>);
+
 class VanCalendarOption {
     // 选择类型:
   // single表示选择单个日期，
   // multiple表示选择多个日期，
   // range表示选择日期区间
-  final String type;
+  final VanCalendarType type;
   // 控制是否显示
   final bool show;
   // 日历标题
@@ -24,9 +34,9 @@ class VanCalendarOption {
   // 可选择的最大日期
   final dynamic maxDate;
   // 默认日期
-  final dynamic defaultDate;
+  final List<String> defaultDate;
   // 日期行高
-  final dynamic rowHeight;
+  // final dynamic rowHeight;
   // 格式化函数
   final dynamic formatter;
   // 是否以弹层的形式展示日历
@@ -49,26 +59,36 @@ class VanCalendarOption {
   final String confirmDisabledText;
   // 设置周起始日
   final int firstDayWeek;
+  // 确认事件
+  final onConfirmCallBack onConfirm;
+  // 点击事件
+  final onSelectCallBack onSelect;
+  // 当日历组件的 type 为 multiple 时，取消选中日期时触发	
+  final onSelectCallBack onUnselect;
+
   const VanCalendarOption({
-    this.type, 
+    this.type = VanCalendarType.single, 
     this.title, 
-    this.color, 
+    this.color = '#ee0a24', 
     this.minDate, 
     this.maxDate, 
     this.defaultDate, 
-    this.rowHeight, 
+    // this.rowHeight, 
     this.formatter, 
     this.poppable, 
     this.lazyRender, 
-    this.showMark, 
+    this.showMark = true, 
     this.showTitle, 
-    this.showSubtitle, 
-    this.showConfirm = false, 
+    this.showSubtitle,
+    this.onSelect, 
+    this.onConfirm,
+    this.onUnselect,
     this.readonly, 
     this.confirmText, 
     this.confirmDisabledText, 
     this.firstDayWeek,
     this.show = true,
+    this.showConfirm = true, 
   });
 }
 
@@ -103,14 +123,17 @@ class VanCalendar extends StatefulWidget {
     VanPopup.remove();
   }
   
+  static close() {
+    VanPopup.close();
+  }
 }
 
 class _VanCalendarState extends State<VanCalendar> {
 
   List<Map<String,dynamic>> list = [];
-  Set select = new Set();
+  Set<String> select = new Set();
 
-    getStyles() {
+  getStyles() {
     return {
       'main':{
         CssRule.flex:1,
@@ -178,7 +201,7 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.fontSize:16
       },
       'list-item-select':{
-        CssRule.backgroundColor:'red',
+        CssRule.backgroundColor:widget.option.color,
         CssRule.color:'white',
       },
       'empty':{
@@ -187,10 +210,10 @@ class _VanCalendarState extends State<VanCalendar> {
       },
       'list-item-month-title':{
         CssRule.color:'#323233',
-        CssRule.height:44,
+        CssRule.height:33,
         CssRule.alignItems:'center',
         CssRule.justifyContent:'center',
-        CssRule.width:double.infinity
+        CssRule.width:double.infinity,
       }
     };
   }
@@ -203,6 +226,11 @@ class _VanCalendarState extends State<VanCalendar> {
         list = getDefaultList();        
       });
     }
+    if (widget.option.defaultDate != null) {
+      setState(() {
+        select = Set.from(widget.option.defaultDate);
+      });
+    }
   }
 
   getMonthDays(currentYear,currentMonth,index) {
@@ -211,7 +239,7 @@ class _VanCalendarState extends State<VanCalendar> {
         'select':false,
         'disable':false,
         'name':i + 1,
-        'value':DayDart.fromDateTime(DateTime(currentYear,currentMonth + index + 1,i)).format(fm:'YYYY-MM-DD')
+        'value':DayDart.fromDateTime(DateTime(currentYear,currentMonth + index,i + 1)).format(fm:'YYYY-MM-DD')
       };
     });
   }
@@ -278,18 +306,48 @@ class _VanCalendarState extends State<VanCalendar> {
     );
   }
 
-  onListItemClick(int parentIndex,int index) {
-    list[parentIndex]['children'][index]['select'] = !list[parentIndex]['children'][index]['select'];
-    final selectValue = list[parentIndex]['children'][index]['value'];
-    if (select.contains(selectValue)){
-      select.remove(selectValue);
-    }else {
-      select.add(selectValue);
-    }
+  onSingle(int parentIndex,int index) {
+    final String value = list[parentIndex]['children'][index]['value'];
+    select.clear();
+    select.add(value);
     setState(() {
-      list = list;
       select = select;
     });
+  }
+
+  onMultiple(int parentIndex,int index) {
+    final String value = list[parentIndex]['children'][index]['value'];
+    if (select.contains(value)) {
+      select.remove(value);
+      if (widget.option.onUnselect != null) {
+        widget.option.onUnselect(select.toList());
+      }
+    }else {
+      select.add(value);
+    }
+    setState(() {
+      select = select;
+    });
+  }
+
+  onListItemClick(int parentIndex,int index) {
+    switch (widget.option.type) {
+      case VanCalendarType.single:
+        this.onSingle(parentIndex,index);
+        break;
+      case VanCalendarType.multiple:
+        this.onMultiple(parentIndex,index);
+        break;
+      case VanCalendarType.range:
+        this.onSingle(parentIndex,index);
+        break;
+      default:
+        this.onSingle(parentIndex,index);
+        break;
+    }
+    if (widget.option.onSelect != null) {
+      widget.option.onSelect(select.toList());
+    }
   }
 
   List<Widget> renderListItemChildren(List children,int parentIndex) {
@@ -299,7 +357,7 @@ class _VanCalendarState extends State<VanCalendar> {
       final css = {
         'list-item-normal':true,
         'list-item-disabled':e['disable'],
-        'list-item-select':e['select'],
+        'list-item-select':select.contains(e['value']),
       };
       final cls = StylesMap.getClass(css, getStyles());
       return View(
@@ -340,7 +398,7 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.height:listItem['children'].length > 35 ? 324 + showMonthTitleSize : 270 + showMonthTitleSize
       },
       children: [
-        renderListItemTitle(listItem['title']),
+        widget.option.showMark ? renderListItemTitle(listItem['title']) : Container(),
         renderListItemBK(listItem,index)
       ],
     );
@@ -357,6 +415,20 @@ class _VanCalendarState extends State<VanCalendar> {
     );
   }
 
+  // 确认点击事件
+  onConfirm() {
+    if (select.length > 0) {
+      if (widget.option.onConfirm != null) {
+        widget.option.onConfirm(select.toList());
+        VanCalendar.close();
+      }
+    }else {
+      Toast(context: context,option: VanToastOption(
+        message: '请选择'
+      ));
+    }
+  }
+
   renderButton() {
     return VanButton(
       text: '确定',
@@ -364,14 +436,14 @@ class _VanCalendarState extends State<VanCalendar> {
       block: true,
       type: 'danger',
       disabled: select.length == 0 ,
-      onClick: (){
-        print('点击');
-      },
+      onClick: onConfirm,
       className: {
-        CssRule.borderRadius:15,
+        CssRule.borderRadius:18,
         CssRule.marginLeft:15,
         CssRule.marginRight:15,
-        CssRule.height:30
+        CssRule.height:36,
+        CssRule.backgroundColor:widget.option.color,
+        CssRule.borderColor:widget.option.color
       }
     );
   }

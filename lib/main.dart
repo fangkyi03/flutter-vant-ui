@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/calendar.dart';
-import 'package:flutter_vant/component/icon.dart';
-import 'package:flutter_vant/component/popup.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
 
@@ -47,10 +44,22 @@ class _MyHomePageState extends State<MyHomePage> {
     };
   }
 
+  onConfirm(List<String> select) {
+    print('object${select}');
+  }
+
+  onSelect(List<String> select) {
+    print('点击');
+  }
+
   onClick() {
     VanCalendar.show(context: context,option: VanCalendarOption(
       title: '日历',
-      showConfirm: false
+      onConfirm: onConfirm,
+      onSelect: onSelect,
+      type: VanCalendarType.multiple,
+      defaultDate: ['2021-03-28','2021-04-01'],
+      showMark: false
     ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',
@@ -81,15 +90,16 @@ class _MyHomePageState extends State<MyHomePage> {
       styles: getStyle()['main'],
       children: [
         VanButton(text: '点击打开pop',onClick: onClick),
-        View(
-          styles: {
-            CssRule.height:700,
-            CssRule.width:400
-          },
-          children: [
-            VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
-          ],
-        )
+        // View(
+        //   styles: {
+        //     CssRule.height:700,
+        //     CssRule.width:400,
+        //     CssRule.paddingBottom:40
+        //   },
+        //   children: [
+        //     VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
+        //   ],
+        // )
       ],
     ));
   }
