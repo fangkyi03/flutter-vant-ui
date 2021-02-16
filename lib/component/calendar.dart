@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:rlstyles/Component/CssRule.dart';
+import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
 import 'package:flutter_daydart/flutter_daydart.dart';
@@ -106,6 +107,38 @@ class VanCalendar extends StatefulWidget {
 
 class _VanCalendarState extends State<VanCalendar> {
 
+  List<Map<String,dynamic>> list = [];
+  @override
+  initState() {
+    super.initState();
+    if (widget.option.minDate == null && widget.option.maxDate == null ) {
+      setState(() {
+        list = getDefaultList();        
+      });
+    }
+  }
+
+  getDefaultList() {
+    return List.generate(6, (index){
+      final currentYear = DayDart().year();
+      final currentMonth = DayDart().month();
+      final monthDays = List.generate(DateTime(currentYear,currentMonth + index + 1,0).day, (i){
+          return {
+            'select':false,
+            'disable':false,
+            'name':i + 1,
+          };
+      });
+      final weeks = DayDart.fromDateTime(DateTime(currentYear,currentMonth + index,1)).day();
+      final emptyDay = List.generate(weeks, (index) => {'name':null});
+      final days = [...emptyDay,...monthDays];
+      return {
+        'title':currentMonth + index,
+        'children':days
+      };
+    });
+  }
+
   getStyles() {
     return {
       'main':{
@@ -114,18 +147,18 @@ class _VanCalendarState extends State<VanCalendar> {
       },
       'header':{
         CssRule.width:double.infinity,
-        CssRule.height:50,
+        CssRule.height:30,
         CssRule.alignItems:'center',
         CssRule.justifyContent:'center',
         CssRule.fontSize:12,
-        CssRule.color:'#333333'
+        CssRule.color:'#333333',
       },
       'week':{
         CssRule.flexDirection:'row',
         CssRule.alignItems:'center',
         CssRule.height:30,
         CssRule.width:double.infinity,
-        CssRule.borderBottomColor:Colors.black.withOpacity(0.5),
+        CssRule.borderBottomColor:Colors.black.withOpacity(0.2),
         CssRule.borderBottomWidth:0.5,
         CssRule.borderBottomStyle:'solid'
       },
@@ -134,12 +167,47 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.justifyContent:'center',
         CssRule.flex:1,
         CssRule.fontSize:12
+      },
+      'list-item':{
+        CssRule.height:270,
+        CssRule.width:double.infinity,
+        CssRule.flexWrap:'wrap',
+        CssRule.flexDirection:'row',
+        CssRule.zIndex:99
+      },
+      'list-item-title':{
+        CssRule.position:'abs',
+        CssRule.left:0,
+        CssRule.right:0,
+        CssRule.top:0,
+        CssRule.bottom:0,
+        CssRule.justifyContent:'center',
+        CssRule.alignItems:'center',
+        CssRule.fontSize:160,
+        CssRule.color:'rgba(242, 243, 245, 0.8)',
+        CssRule.fontWeight:'bold'
+      },
+      'list-item-normal':{
+        CssRule.width:51.42,
+        CssRule.height:54,
+        CssRule.alignItems:'center',
+        CssRule.justifyContent:'center',
+        CssRule.color:'#323233',
+        CssRule.fontSize:16
+      },
+      'list-item-select':{
+        CssRule.backgroundColor:'red',
+        CssRule.color:'white'
+      },
+      'empty':{
+        CssRule.width:51.42,
+        CssRule.height:54,
       }
     };
   }
 
   getHeaderName() {
-    return DayDart().format(fm: 'YYYY-MM-DD');
+    return DayDart().format(fm: 'YYYY-MM');
   }
 
   renderHeader() {
@@ -161,8 +229,58 @@ class _VanCalendarState extends State<VanCalendar> {
     );
   }
 
+  Widget renderListItemTitle(title) {
+    return View(
+      styles: getStyles()['list-item-title'],
+      children: [
+        TextView(title.toString())
+      ]
+    );
+  }
+
+  Widget renderEmpty () {
+    return View(
+      styles: getStyles()['empty'],
+    );
+  }
+
+  onListItemClick(int parentIndex,int index) {
+    print('点击');
+    list[parentIndex]['children'][index]['select'] = !list[parentIndex]['children'][index]['select'];
+    setState(() {
+      list = list;
+    });
+  }
+
+  List<Widget> renderListItemChildren(List<Map<String,dynamic>> children,int parentIndex) {
+    return children.asMap().keys.map((index){
+      final Map<String,dynamic> e = children[index];
+      if (e['name'] == null ) return renderEmpty();
+      final css = {
+        'list-item-normal':true,
+        'list-item-disabled':e['disable'],
+        'list-item-select':e['select'],
+      };
+      final cls = StylesMap.getClass(css, getStyles());
+      return View(
+        styles: cls,
+        onClick: ()=> onListItemClick(parentIndex, index),
+        children: [
+          TextView(e['name'].toString())
+        ]
+      );
+    }).toList();
+  }
+
   Widget renderListItem(BuildContext context,int index) {
-    return TextView(index.toString());
+    final Map<String,dynamic> listItem = list[index];
+    return View(
+      styles: getStyles()['list-item'],
+      children: [
+        // renderListItemTitle(listItem['title']),
+        ...renderListItemChildren(listItem['children'],index)
+      ],
+    );
   }
 
   renderList() {
@@ -170,7 +288,7 @@ class _VanCalendarState extends State<VanCalendar> {
       flex: 1, 
       child: ListView.builder(
         itemBuilder: renderListItem,
-        itemCount: 100,
+        itemCount: list.length,
         shrinkWrap:true
       )
     );

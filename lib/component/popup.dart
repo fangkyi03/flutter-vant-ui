@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/overlay.dart';
 import 'package:rlstyles/Component/CssRule.dart';
 import 'package:rlstyles/Component/TextView.dart';
@@ -87,12 +88,12 @@ class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
       },
       'header-close':{
         CssRule.position:'abs',
-        CssRule.right:0,
+        CssRule.right:0.0,
         CssRule.top:0,
         CssRule.bottom:0,
         CssRule.width:30,
         CssRule.alignItems:'center',
-        CssRule.justifyContent:'center'
+        CssRule.justifyContent:'center',
       },
       'pop-left':{
         CssRule.position:'abs',
