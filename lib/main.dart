@@ -32,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  List<String> mSelect = [];
   getStyle() {
     return {
       'main':{
@@ -45,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onConfirm(List<String> select) {
-    print('object${select}');
+    setState(() {
+      mSelect = select;      
+    });
   }
 
   onSelect(List<String> select) {
@@ -57,9 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
       title: '日历',
       onConfirm: onConfirm,
       onSelect: onSelect,
-      type: VanCalendarType.multiple,
-      defaultDate: ['2021-03-28','2021-04-01'],
-      showMark: false
+      type: VanCalendarType.range,
+      defaultDate: mSelect,
+      // defaultDate: ['2021-03-28','2021-04-01'],
+      showMark: false,
+      showSubtitle: false,
+      confirmText: '点击确定'
     ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',

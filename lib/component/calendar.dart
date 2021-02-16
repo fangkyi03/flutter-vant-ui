@@ -3,6 +3,7 @@ import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/Component/CssRule.dart';
+import 'package:rlstyles/Component/HexColor.dart';
 import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
@@ -42,7 +43,7 @@ class VanCalendarOption {
   // 是否以弹层的形式展示日历
   final bool poppable;
   // 是否只渲染可视区域的内容
-  final bool lazyRender;
+  // final bool lazyRender;
   // 是否显示月份背景水印
   final bool showMark;
   // 是否展示日历标题
@@ -76,10 +77,10 @@ class VanCalendarOption {
     // this.rowHeight, 
     this.formatter, 
     this.poppable, 
-    this.lazyRender, 
+    // this.lazyRender, 
     this.showMark = true, 
-    this.showTitle, 
-    this.showSubtitle,
+    this.showTitle = true, 
+    this.showSubtitle = true,
     this.onSelect, 
     this.onConfirm,
     this.onUnselect,
@@ -110,7 +111,7 @@ class VanCalendar extends StatefulWidget {
         overlay:true,
         isShowHeader: true,
         position: 'bottom',
-        title: option.title,
+        title: option.showTitle ? option.title : '',
         overlayStyle: {
           CssRule.height:500
         },
@@ -214,6 +215,9 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.alignItems:'center',
         CssRule.justifyContent:'center',
         CssRule.width:double.infinity,
+      },
+      'list-item-hover':{
+        CssRule.color:widget.option.color
       }
     };
   }
@@ -235,11 +239,15 @@ class _VanCalendarState extends State<VanCalendar> {
 
   getMonthDays(currentYear,currentMonth,index) {
     return List.generate(DateTime(currentYear,currentMonth + index + 1,0).day, (i){
+      final format = DayDart.fromDateTime(DateTime(currentYear,currentMonth + index,i + 1)).format(fm:'YYYY-MM-DD');
+      final split = format.split('-');
       return {
         'select':false,
         'disable':false,
         'name':i + 1,
-        'value':DayDart.fromDateTime(DateTime(currentYear,currentMonth + index,i + 1)).format(fm:'YYYY-MM-DD')
+        // dayDart有bug 只判断了小于9的 导致遇到9的时候 返回的是9而不是09
+        'value':split[2] == '9' ? split[0] + '-' + split[1] + '-0' + split[2] : format 
+        // 'value':split[0] + '-' + split[1] + '-' + (int.parse(split[2]) < 10 ? '0' + split[2] : split[2])
       };
     });
   }
@@ -313,6 +321,9 @@ class _VanCalendarState extends State<VanCalendar> {
     setState(() {
       select = select;
     });
+    if (widget.option.showConfirm == false) {
+      onConfirm();
+    }
   }
 
   onMultiple(int parentIndex,int index) {
@@ -328,9 +339,32 @@ class _VanCalendarState extends State<VanCalendar> {
     setState(() {
       select = select;
     });
+    if (select.length > 0 && widget.option.showConfirm == false ) {
+      onConfirm();
+    }
+  }
+
+  onRange(int parentIndex,int index) {
+    final String value = list[parentIndex]['children'][index]['value'];
+    if (select.length == 2 ) {
+      select.clear();
+    }else {
+      if (select.contains(value)) {
+        select.remove(value);
+      }else {
+        select.add(value);
+      }
+    }
+    setState(() {
+      select = select;
+    });
+    if (select.length > 0 && widget.option.showConfirm == false ) {
+      onConfirm();
+    }
   }
 
   onListItemClick(int parentIndex,int index) {
+    if (widget.option.readonly == true) return;
     switch (widget.option.type) {
       case VanCalendarType.single:
         this.onSingle(parentIndex,index);
@@ -339,7 +373,7 @@ class _VanCalendarState extends State<VanCalendar> {
         this.onMultiple(parentIndex,index);
         break;
       case VanCalendarType.range:
-        this.onSingle(parentIndex,index);
+        this.onRange(parentIndex,index);
         break;
       default:
         this.onSingle(parentIndex,index);
@@ -347,6 +381,23 @@ class _VanCalendarState extends State<VanCalendar> {
     }
     if (widget.option.onSelect != null) {
       widget.option.onSelect(select.toList());
+    }
+  }
+
+  getItemHover(String value) {
+    if (widget.option.type == VanCalendarType.range) {
+      if (select.length == 2 ) {
+        final List<int> selectArr = select.toList().map((e)=> DateTime.parse(e).microsecondsSinceEpoch).toList();
+        final int currentTime = DateTime.parse(value).microsecondsSinceEpoch;
+        if (currentTime > selectArr[0] && currentTime < selectArr[1]) {
+          return true;
+        }
+        return false;
+      }else {
+        return false;
+      }
+    }else {
+      return false;
     }
   }
 
@@ -358,13 +409,18 @@ class _VanCalendarState extends State<VanCalendar> {
         'list-item-normal':true,
         'list-item-disabled':e['disable'],
         'list-item-select':select.contains(e['value']),
+        'list-item-hover':getItemHover(e['value'])
       };
       final cls = StylesMap.getClass(css, getStyles());
       return View(
         styles: cls,
         onClick: ()=> onListItemClick(parentIndex, index),
         children: [
-          TextView(e['name'].toString())
+          TextView(e['name'].toString()),
+          widget.option.type == VanCalendarType.range 
+          && select.length == 2 
+          && select.contains(e['value']) 
+          ? TextView(e['value'] == select.first ? '开始' : '结束') : Container()
         ]
       );
     }).toList();
@@ -383,7 +439,7 @@ class _VanCalendarState extends State<VanCalendar> {
     return View(
       styles: getStyles()['list-item-bk'],
       children: [
-        index > 0 ? renderListItemMonthTitle(listItem['format']) : Container(),
+        index > 0 && widget.option.showSubtitle ? renderListItemMonthTitle(listItem['format']) : Container(),
         ...renderListItemChildren(listItem['children'] ?? [],index)
       ]
     );
@@ -430,8 +486,9 @@ class _VanCalendarState extends State<VanCalendar> {
   }
 
   renderButton() {
+    final String confirmText = '确定';
     return VanButton(
-      text: '确定',
+      text: widget.option.readonly == true ? widget.option.confirmDisabledText ?? confirmText : widget.option.confirmText ?? confirmText,
       round: true,
       block: true,
       type: 'danger',
