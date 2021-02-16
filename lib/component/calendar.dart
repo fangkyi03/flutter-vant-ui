@@ -63,7 +63,7 @@ class VanCalendarOption {
     this.showMark, 
     this.showTitle, 
     this.showSubtitle, 
-    this.showConfirm, 
+    this.showConfirm = false, 
     this.readonly, 
     this.confirmText, 
     this.confirmDisabledText, 
@@ -113,8 +113,7 @@ class _VanCalendarState extends State<VanCalendar> {
     getStyles() {
     return {
       'main':{
-        // CssRule.height:450,
-        // CssRule.width:double.infinity,
+        CssRule.flex:1,
       },
       'header':{
         CssRule.width:double.infinity,
@@ -381,7 +380,7 @@ class _VanCalendarState extends State<VanCalendar> {
     return View(
       styles: getStyles()['list-view'],
       children: [
-        renderButton(),
+        widget.option.showConfirm ? renderButton() : Container(),
         renderListView(),
       ]
     );

@@ -178,7 +178,7 @@ class _VanPopupState extends State<VanPopup> with TickerProviderStateMixin {
       },
       children: [
         renderHeader(),
-        Expanded(flex: 1,child: widget.option.child ?? Container())
+        widget.option.child ?? Container()
       ],
     );
   }

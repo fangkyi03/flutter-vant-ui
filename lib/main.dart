@@ -38,8 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
   getStyle() {
     return {
       'main':{
-        CssRule.justifyContent:'center',
-        CssRule.alignItems:'center',
+        // CssRule.justifyContent:'center',
+        // CssRule.alignItems:'center',
+        CssRule.paddingTop:50,
         CssRule.width:double.infinity,
         CssRule.height:double.infinity
       }
@@ -48,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   onClick() {
     VanCalendar.show(context: context,option: VanCalendarOption(
-      title: '日历'
+      title: '日历',
+      showConfirm: false
     ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',
@@ -79,6 +81,15 @@ class _MyHomePageState extends State<MyHomePage> {
       styles: getStyle()['main'],
       children: [
         VanButton(text: '点击打开pop',onClick: onClick),
+        View(
+          styles: {
+            CssRule.height:700,
+            CssRule.width:400
+          },
+          children: [
+            VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
+          ],
+        )
       ],
     ));
   }
