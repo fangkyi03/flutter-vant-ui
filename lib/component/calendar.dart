@@ -171,8 +171,6 @@ class _VanCalendarState extends State<VanCalendar> {
       'list-item':{
         CssRule.height:270,
         CssRule.width:double.infinity,
-        CssRule.flexWrap:'wrap',
-        CssRule.flexDirection:'row',
         CssRule.zIndex:99
       },
       'list-item-title':{
@@ -186,6 +184,15 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.fontSize:160,
         CssRule.color:'rgba(242, 243, 245, 0.8)',
         CssRule.fontWeight:'bold'
+      },
+      'list-item-bk':{
+        CssRule.position:'abs',
+        CssRule.left:0,
+        CssRule.right:0,
+        CssRule.top:0,
+        CssRule.bottom:0,
+        CssRule.flexWrap:'wrap',
+        CssRule.flexDirection:'row',
       },
       'list-item-normal':{
         CssRule.width:51.42,
@@ -272,13 +279,20 @@ class _VanCalendarState extends State<VanCalendar> {
     }).toList();
   }
 
+  Widget renderListItemBK(List<Widget> listChildren) {
+    return View(
+      styles: getStyles()['list-item-bk'],
+      children: listChildren,
+    );
+  }
+
   Widget renderListItem(BuildContext context,int index) {
     final Map<String,dynamic> listItem = list[index];
     return View(
       styles: getStyles()['list-item'],
       children: [
-        // renderListItemTitle(listItem['title']),
-        ...renderListItemChildren(listItem['children'],index)
+        renderListItemTitle(listItem['title']),
+        renderListItemBK(renderListItemChildren(listItem['children'],index)),
       ],
     );
   }
