@@ -139,7 +139,7 @@ class _VanButtonState extends State<VanButton> {
         CssRule.minHeight: 32.0,
         // CssRule.maxHeight: 40.0
       },
-      'btn-block': {CssRule.width: '100%'},
+      'btn-block': {CssRule.width:double.infinity},
     };
   }
 
@@ -232,7 +232,7 @@ class _VanButtonState extends State<VanButton> {
   Widget build(BuildContext context) {
     return View(
       styles: getMainClass(),
-      onClick: widget.onClick,
+      onClick: widget.disabled == false ? widget.onClick : ()=>{},
       children: [
         renderIcon('left'),
         renderLoading(),
