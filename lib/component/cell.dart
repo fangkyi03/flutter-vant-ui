@@ -45,7 +45,7 @@ class VanCell extends StatefulWidget {
   // 描述信息样式
   final Map<String,dynamic> labelStyle;
   // slot插槽
-  final Map slot;
+  final Map<VanCellSlot,dynamic> slot;
   @override
   const VanCell({
     this.title, 
@@ -60,7 +60,7 @@ class VanCell extends StatefulWidget {
     this.titleStyle = const {}, 
     this.valueStyle = const {}, 
     this.labelStyle = const {},
-    this.slot = const {},
+    this.slot = const {}
   });
   _VanCellState createState() => _VanCellState();
 }
@@ -110,7 +110,7 @@ class _VanCellState extends State<VanCell> {
 
   renderLeftTitle() {
     if (widget.title == null || widget.title == '') return Container();
-    if (widget.slot['title'] != null ) return widget.slot['title'];
+    if (widget.slot[VanCellSlot.title] != null ) return widget.slot[VanCellSlot.title];
     return View(
       styles: getStyles()['title'],
       children: [
@@ -122,7 +122,7 @@ class _VanCellState extends State<VanCell> {
 
   renderLeftLable() {
     if (widget.label == null || widget.label == '') return Container();
-    return widget.slot['label'] ?? TextView(widget.label,styles: getStyles()['label']) ;
+    return widget.slot[VanCellSlot.label] ?? TextView(widget.label,styles: getStyles()['label']) ;
   }
 
   renderLeft() {
@@ -139,7 +139,7 @@ class _VanCellState extends State<VanCell> {
     return View(
       styles: getStyles()['right'],
       children: [
-        widget.slot['value'] ?? TextView('右侧',styles: getStyles()['right']),
+        widget.slot[VanCellSlot.value] ?? TextView('右侧',styles: getStyles()['right']),
         widget.isLink == true ? Icon(Icons.navigate_next,size: getSize(size: 15)) : Container()
       ]
     );
