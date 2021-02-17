@@ -73,7 +73,7 @@ class Toast {
       },
       'toast':{
         CssRule.width:120,
-        CssRule.maxHeight:100,
+        CssRule.maxHeight:120,
         CssRule.backgroundColor:'rgba(0, 0, 0, 0.7)',
         CssRule.borderRadius:5,
         CssRule.justifyContent:'center',

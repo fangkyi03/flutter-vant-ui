@@ -3,7 +3,6 @@ import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/popup.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/Component/CssRule.dart';
-import 'package:rlstyles/Component/HexColor.dart';
 import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
@@ -489,6 +488,14 @@ class _VanCalendarState extends State<VanCalendar> {
     }
   }
 
+  getButtonDisable() {
+    if (widget.option.type == VanCalendarType.range) {
+      return select.length != 2;
+    }else {
+      return select.length == 0;
+    }
+  }
+
   renderButton() {
     final String confirmText = '确定';
     return VanButton(
@@ -496,7 +503,7 @@ class _VanCalendarState extends State<VanCalendar> {
       round: true,
       block: true,
       type: 'danger',
-      disabled: select.length == 0 ,
+      disabled: getButtonDisable(),
       onClick: onConfirm,
       className: {
         CssRule.borderRadius:18,

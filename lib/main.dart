@@ -59,17 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
     print('点击');
   }
 
-  onClick() {
-    // VanCalendar.show(context: context,option: VanCalendarOption(
-    //   title: '日历',
-    //   onConfirm: onConfirm,
-    //   onSelect: onSelect,
-    //   rangColor: 'rgba(238,10,36,0.1)',
-    //   type: VanCalendarType.range,
-    //   defaultDate: mSelect,
-    //   // defaultDate: ['2021-03-28','2021-04-01'],
-    //   confirmText: '点击确定'
-    // ));
+  onCalendar() {
+    VanCalendar.show(context: context,option: VanCalendarOption(
+      title: '日历',
+      onConfirm: onConfirm,
+      onSelect: onSelect,
+      rangColor: 'rgba(238,10,36,0.1)',
+      type: VanCalendarType.range,
+      defaultDate: mSelect,
+      // defaultDate: ['2021-03-28','2021-04-01'],
+      confirmText: '点击确定'
+    ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',
     //   position: VanToastPosition.top,
@@ -91,6 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //   title:'测试',
     //   child: TextView('测试')
     // ));   
+  }
+
+  onNotify() {
     VanNotify(
       context: context,
       option: VanNotifyOption(
@@ -110,14 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
           length: 6,
           mask: false,
         ),
-        VanButton(text: '点击打开pop',onClick: onClick),
-        // TextFormField(
-        //   autofocus: true,
-        //   decoration:InputDecoration(
-        //     hintText: 'ceshi',
-        //     border: UnderlineInputBorder(borderSide: BorderSide(width: 1,color:Colors.red)),
-        //   )  
-        // )
+        VanButton(text: '点击打开notify',onClick: onNotify,block: true),
+        VanButton(text: '点击打开日历',onClick: onCalendar,block: true),
         View(
           styles: {
             CssRule.height:500,
@@ -125,7 +122,21 @@ class _MyHomePageState extends State<MyHomePage> {
             CssRule.paddingBottom:40
           },
           children: [
-            VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
+            VanCalendar(option: VanCalendarOption(
+              title: '日历1',
+              showConfirm: true,
+              type: VanCalendarType.range,
+              rangColor: 'rgba(238,10,36,0.1)',
+              onConfirm: (List<String> list){
+                Toast(
+                  context: context,
+                  option: VanToastOption(
+                    type: VanToastType.fail,
+                    message: '当前选择日期' + list.toString()
+                  )
+                );
+              }
+            ))
           ],
         )
       ],

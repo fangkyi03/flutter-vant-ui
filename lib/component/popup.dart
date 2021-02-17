@@ -65,7 +65,9 @@ class VanPopup extends StatefulWidget {
   }
 
   static close() {
-    (_someKey.last.currentState as _VanPopupState).onCancel();
+    if (_someKey.length > 0) {
+      (_someKey.last.currentState as _VanPopupState).onCancel();
+    }
   }
 }
  
