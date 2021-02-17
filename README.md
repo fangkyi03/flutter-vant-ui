@@ -1,5 +1,6 @@
 底层使用rlstyles
 因目前还在疯狂修复bug中 所以rlstyles没有提交新版本 想体验的请自行clone rlstyle到本地
+
 并修改yaml文件中rlstyles的路径指向
 
 支持css样式跟slot 可以使用下面的方式来写代码
