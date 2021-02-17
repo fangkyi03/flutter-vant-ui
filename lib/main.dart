@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/calendar.dart';
+import 'package:flutter_vant/component/notify.dart';
+import 'package:flutter_vant/component/passwordInput.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
 
@@ -40,7 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // CssRule.alignItems:'center',
         CssRule.paddingTop:50,
         CssRule.width:double.infinity,
-        CssRule.height:double.infinity
+        CssRule.height:double.infinity,
+        CssRule.backgroundColor:'#f8f8f8'
       }
     };
   }
@@ -60,11 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
       title: '日历',
       onConfirm: onConfirm,
       onSelect: onSelect,
+      rangColor: 'rgba(238,10,36,0.1)',
       type: VanCalendarType.range,
       defaultDate: mSelect,
       // defaultDate: ['2021-03-28','2021-04-01'],
-      showMark: false,
-      showSubtitle: false,
       confirmText: '点击确定'
     ));
     // Toast.loading(context, VanToastOption(
@@ -95,17 +98,30 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(body: View(
       styles: getStyle()['main'],
       children: [
+        VanPasswordInput(
+          value: '123',
+          gutter: 1,
+          length: 6,
+          mask: false,
+        ),
         VanButton(text: '点击打开pop',onClick: onClick),
-        // View(
-        //   styles: {
-        //     CssRule.height:700,
-        //     CssRule.width:400,
-        //     CssRule.paddingBottom:40
-        //   },
-        //   children: [
-        //     VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
-        //   ],
+        // TextFormField(
+        //   autofocus: true,
+        //   decoration:InputDecoration(
+        //     hintText: 'ceshi',
+        //     border: UnderlineInputBorder(borderSide: BorderSide(width: 1,color:Colors.red)),
+        //   )  
         // )
+        View(
+          styles: {
+            CssRule.height:500,
+            CssRule.width:400,
+            CssRule.paddingBottom:40
+          },
+          children: [
+            VanCalendar(option: VanCalendarOption(title: '日历1',showConfirm: true))
+          ],
+        )
       ],
     ));
   }

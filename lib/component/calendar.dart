@@ -28,6 +28,8 @@ class VanCalendarOption {
   final bool show;
   // 日历标题
   final String title;
+  // 区域选择时背景颜色
+  final dynamic rangColor;
   // 主题色，对底部按钮和选中日期生效
   final dynamic color;
   // 可选择的最小日期
@@ -70,6 +72,7 @@ class VanCalendarOption {
   const VanCalendarOption({
     this.type = VanCalendarType.single, 
     this.title, 
+    this.rangColor,
     this.color = '#ee0a24', 
     this.minDate, 
     this.maxDate, 
@@ -217,6 +220,7 @@ class _VanCalendarState extends State<VanCalendar> {
         CssRule.width:double.infinity,
       },
       'list-item-hover':{
+        CssRule.backgroundColor:widget.option.rangColor,
         CssRule.color:widget.option.color
       }
     };

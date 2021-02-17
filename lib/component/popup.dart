@@ -222,6 +222,7 @@ class _VanPopupState extends State<VanPopup> {
 
   @override
   Widget build(BuildContext context) {
+    print('s');
     return View(
       styles: getStyle()['main'],
       onClick: onCancel,
