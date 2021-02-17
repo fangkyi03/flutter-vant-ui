@@ -60,16 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onClick() {
-    VanCalendar.show(context: context,option: VanCalendarOption(
-      title: '日历',
-      onConfirm: onConfirm,
-      onSelect: onSelect,
-      rangColor: 'rgba(238,10,36,0.1)',
-      type: VanCalendarType.range,
-      defaultDate: mSelect,
-      // defaultDate: ['2021-03-28','2021-04-01'],
-      confirmText: '点击确定'
-    ));
+    // VanCalendar.show(context: context,option: VanCalendarOption(
+    //   title: '日历',
+    //   onConfirm: onConfirm,
+    //   onSelect: onSelect,
+    //   rangColor: 'rgba(238,10,36,0.1)',
+    //   type: VanCalendarType.range,
+    //   defaultDate: mSelect,
+    //   // defaultDate: ['2021-03-28','2021-04-01'],
+    //   confirmText: '点击确定'
+    // ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',
     //   position: VanToastPosition.top,
@@ -91,7 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
     //   title:'测试',
     //   child: TextView('测试')
     // ));   
-    // VanNotify(context: context,option: VanNotifyOption(message: '测试',type: 'danger'));
+    VanNotify(
+      context: context,
+      option: VanNotifyOption(
+        message: '测试',
+        type: VanNotifyType.primary
+      )
+    );
   }
 
   renderBody() {

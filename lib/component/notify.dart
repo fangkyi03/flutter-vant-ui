@@ -5,6 +5,13 @@ import 'package:rlstyles/Component/StylesMap.dart';
 import 'package:rlstyles/Component/TextView.dart';
 import 'package:rlstyles/Component/View.dart';
 
+class VanNotifyType {
+  static const String primary = 'primary';
+  static const String success = 'success';
+  static const String warning = 'warning';
+  static const String danger = 'danger';
+}
+
 class VanNotifyOption {
   // 类型，可选值为 primary success warning	
   final String type;
@@ -18,7 +25,7 @@ class VanNotifyOption {
   final Map<String,dynamic> className;
 
   VanNotifyOption({
-    this.type = 'success',
+    this.type = VanNotifyType.success,
     this.message,
     this.color,
     this.background,
@@ -38,11 +45,15 @@ class VanNotify {
 
       },
       'body':{
-        CssRule.height:36,
+        CssRule.minHeight:36,
+        // CssRule.height:36,
         CssRule.width:double.infinity,
         CssRule.justifyContent:'center',
         CssRule.alignItems:'center',
         CssRule.color:'white',
+        CssRule.paddingTop:40,
+        CssRule.paddingBottom:10,
+        ..._option.className
       },
       'success':{
         CssRule.backgroundColor:'#07c160',
@@ -84,7 +95,7 @@ class VanNotify {
 
   VanNotify({this.option,this.context}) {
     _option = this.option;
-    VanOverlay.show(context: context,child:renderNotify());      
+    VanOverlay.show(context: context,child:renderNotify(),isShowTop: false);      
     Future.delayed(Duration(milliseconds: 2000))
     .then((value) => VanOverlay.remove());     
   }
