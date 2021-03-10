@@ -6,7 +6,6 @@ import 'package:flutter_vant/component/notify.dart';
 import 'package:flutter_vant/component/passwordInput.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -65,8 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
       onConfirm: onConfirm,
       onSelect: onSelect,
       rangColor: 'rgba(238,10,36,0.1)',
-      type: VanCalendarType.range,
-      defaultDate: mSelect,
+      // type: 'asdasd',
+      // type: VanCalendarType.range,
+      // defaultDate: mSelect,
       // defaultDate: ['2021-03-28','2021-04-01'],
       confirmText: '点击确定'
     ));
