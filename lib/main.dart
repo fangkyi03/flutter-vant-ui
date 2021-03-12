@@ -107,38 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(body: View(
       styles: getStyle()['main'],
       children: [
-        VanPasswordInput(
-          value: '123',
-          gutter: 1,
-          length: 6,
-          mask: false,
-        ),
-        VanButton(text: '点击打开notify',onClick: onNotify,block: true),
         VanButton(text: '点击打开日历',onClick: onCalendar,block: true),
-        View(
-          styles: {
-            CssRule.height:500,
-            CssRule.width:400,
-            CssRule.paddingBottom:40
-          },
-          children: [
-            VanCalendar(option: VanCalendarOption(
-              title: '日历1',
-              showConfirm: true,
-              type: VanCalendarType.range,
-              rangColor: 'rgba(238,10,36,0.1)',
-              onConfirm: (List<String> list){
-                Toast(
-                  context: context,
-                  option: VanToastOption(
-                    type: VanToastType.fail,
-                    message: '当前选择日期' + list.toString()
-                  )
-                );
-              }
-            ))
-          ],
-        )
       ],
     ));
   }

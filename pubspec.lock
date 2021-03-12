@@ -119,9 +119,11 @@ packages:
   rlstyles:
     dependency: "direct main"
     description:
-      path: "/Users/lv/Desktop/flutter-rlstyle"
-      relative: false
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "35db7b598414aaabb2671dd039c6537607054eba"
+      url: "https://github.com/fangkyi03/flutter-rlstyle.git"
+    source: git
     version: "1.0.3"
   sky_engine:
     dependency: transitive
