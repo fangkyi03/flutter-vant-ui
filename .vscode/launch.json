@@ -9,7 +9,6 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "flutterMode": "release"
         },
         {
             "name": "发行模式",

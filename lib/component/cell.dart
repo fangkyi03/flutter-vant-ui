@@ -19,7 +19,6 @@ class VanCellSlot {
 }
 
 class VanCell extends StatefulWidget {
-
   // 左侧标题
   final String title;
   // 右侧内容
@@ -39,70 +38,68 @@ class VanCell extends StatefulWidget {
   // 箭头方向
   final VanCellArrowDirection arrowDirection;
   // 左侧标题样式
-  final Map<String,dynamic> titleStyle;
+  final Map<String, dynamic> titleStyle;
   // 右侧内容样式
-  final Map<String,dynamic> valueStyle;
+  final Map<String, dynamic> valueStyle;
   // 描述信息样式
-  final Map<String,dynamic> labelStyle;
+  final Map<String, dynamic> labelStyle;
   // slot插槽
-  final Map<VanCellSlot,dynamic> slot;
+  final Map<String, dynamic> slot;
   @override
-  const VanCell({
-    this.title, 
-    this.value, 
-    this.label, 
-    this.icon, 
-    this.border = true, 
-    this.isLink, 
-    this.required, 
-    this.center, 
-    this.arrowDirection, 
-    this.titleStyle = const {}, 
-    this.valueStyle = const {}, 
-    this.labelStyle = const {},
-    this.slot = const {}
-  });
+  const VanCell(
+      {this.title,
+      this.value,
+      this.label,
+      this.icon,
+      this.border = true,
+      this.isLink,
+      this.required,
+      this.center,
+      this.arrowDirection,
+      this.titleStyle = const {},
+      this.valueStyle = const {},
+      this.labelStyle = const {},
+      this.slot = const {}});
   _VanCellState createState() => _VanCellState();
 }
 
 class _VanCellState extends State<VanCell> {
-
   getStyles() {
     return {
-      'main':{
-        CssRule.minHeight:24,
-        CssRule.width:double.infinity,
-        CssRule.flexDirection:'row',
-        CssRule.justifyContent:'space-between',
-        CssRule.alignItems:widget.center == true ? 'center' : 'flex-start',
-        CssRule.backgroundColor:'white',
-        CssRule.paddingLeft:10,
-        CssRule.paddingRight:10,
-        CssRule.paddingBottom:5,
-        CssRule.paddingTop:5,
-        CssRule.borderBottomColor:'##ebedf0',
-        CssRule.borderBottomWidth:widget.border == true ? 0.5 : 0.0,
-        CssRule.borderBottomStyle:'solid'
+      'main': {
+        CssRule.minHeight: 24,
+        CssRule.width: double.infinity,
+        CssRule.flexDirection: 'row',
+        CssRule.justifyContent: 'space-between',
+        CssRule.alignItems: widget.center == true ? 'center' : 'flex-start',
+        CssRule.backgroundColor: 'white',
+        CssRule.paddingLeft: 10,
+        CssRule.paddingRight: 10,
+        CssRule.paddingBottom: 5,
+        CssRule.paddingTop: 5,
+        CssRule.borderBottomColor: '##ebedf0',
+        CssRule.borderBottomWidth: widget.border == true ? 0.5 : 0.0,
+        CssRule.borderBottomStyle: 'solid'
       },
-      'left':{
-        CssRule.fontSize:14,
-        CssRule.color:'#323233',
+      'left': {
+        CssRule.fontSize: 14,
+        CssRule.color: '#323233',
       },
-      'title':{
-        CssRule.flexDirection:'row',
-        CssRule.alignItems:'center',
+      'title': {
+        CssRule.flexDirection: 'row',
+        CssRule.alignItems: 'center',
         ...widget.titleStyle
       },
-      'label':{
-        CssRule.fontSize:12,
-        CssRule.color:'#969799',
+      'label': {
+        CssRule.fontSize: 12,
+        CssRule.color: '#969799',
         ...widget.labelStyle
       },
-      'right':{
-        CssRule.fontSize:12,
-        CssRule.color:'#323233',
-        CssRule.flexDirection:'row',
-        CssRule.alignItems:'center',
+      'right': {
+        CssRule.fontSize: 12,
+        CssRule.color: '#323233',
+        CssRule.flexDirection: 'row',
+        CssRule.alignItems: 'center',
         ...widget.valueStyle
       }
     };
@@ -110,49 +107,43 @@ class _VanCellState extends State<VanCell> {
 
   renderLeftTitle() {
     if (widget.title == null || widget.title == '') return Container();
-    if (widget.slot[VanCellSlot.title] != null ) return widget.slot[VanCellSlot.title];
-    return View(
-      styles: getStyles()['title'],
-      children: [
-        VanIcon(name: widget.icon,size: 15),
-        TextView(widget.title)
-      ]
-    );
+    if (widget.slot[VanCellSlot.title] != null)
+      return widget.slot[VanCellSlot.title];
+    return View(styles: getStyles()['title'], children: [
+      VanIcon(name: widget.icon, size: 15),
+      TextView(widget.title)
+    ]);
   }
 
   renderLeftLable() {
     if (widget.label == null || widget.label == '') return Container();
-    return widget.slot[VanCellSlot.label] ?? TextView(widget.label,styles: getStyles()['label']) ;
+    return widget.slot[VanCellSlot.label] ??
+        TextView(widget.label, styles: getStyles()['label']);
   }
 
   renderLeft() {
     return View(
-      styles: getStyles()['left'],
-      children: [
-        renderLeftTitle(),
-        renderLeftLable()
-      ]
-    );
+        styles: getStyles()['left'],
+        children: [renderLeftTitle(), renderLeftLable()]);
   }
 
   renderRight() {
-    return View(
-      styles: getStyles()['right'],
-      children: [
-        widget.slot[VanCellSlot.value] ?? TextView('右侧',styles: getStyles()['right']),
-        widget.isLink == true ? Icon(Icons.navigate_next,size: getSize(size: 15)) : Container()
-      ]
-    );
+    print('${widget.slot}');
+    return View(styles: getStyles()['right'], children: [
+      widget.slot[VanCellSlot.value] ??
+          TextView(
+            widget.value ?? '内容',
+            styles: getStyles()['right'],
+          ),
+      widget.isLink == true
+          ? Icon(Icons.navigate_next, size: getSize(size: 15))
+          : Container()
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return View(
-      styles: getStyles()['main'],
-      children: [
-        renderLeft(),
-        renderRight()
-      ]
-    );
+        styles: getStyles()['main'], children: [renderLeft(), renderRight()]);
   }
 }

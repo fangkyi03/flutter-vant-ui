@@ -86,6 +86,7 @@ class _VanButtonState extends State<VanButton> {
         CssRule.alignItems: 'center',
         CssRule.justifyContent: 'center',
         CssRule.flexDirection: 'row',
+        CssRule.height: 30,
         // CssRule.padding: 15.0,
         CssRule.paddingLeft: 5.0,
         CssRule.paddingRight: 5.0,
@@ -139,7 +140,7 @@ class _VanButtonState extends State<VanButton> {
         CssRule.minHeight: 32.0,
         // CssRule.maxHeight: 40.0
       },
-      'btn-block': {CssRule.width:double.infinity},
+      'btn-block': {CssRule.width: double.infinity},
     };
   }
 
@@ -165,7 +166,8 @@ class _VanButtonState extends State<VanButton> {
 
   renderIcon(String position) {
     Widget element;
-    if (widget.iconPosition != position || widget.icon == null) return Container();
+    if (widget.iconPosition != position || widget.icon == null)
+      return Container();
     if (widget.icon.runtimeType.toString() == 'String' &&
         widget.icon.indexOf('http') != -1) {
       element = Image(
@@ -204,9 +206,8 @@ class _VanButtonState extends State<VanButton> {
             width: widget.loadingSize,
             height: widget.loadingSize,
             child: CircularProgressIndicator(
-              strokeWidth: 1,
-              valueColor: AlwaysStoppedAnimation(Colors.white))
-        )
+                strokeWidth: 1,
+                valueColor: AlwaysStoppedAnimation(Colors.white)))
       ],
     );
   }
@@ -231,14 +232,13 @@ class _VanButtonState extends State<VanButton> {
   @override
   Widget build(BuildContext context) {
     return View(
-      styles: getMainClass(),
-      onClick: widget.disabled == false ? widget.onClick : ()=>{},
-      children: [
-        renderIcon('left'),
-        renderLoading(),
-        renderContent(),
-        renderIcon('right')
-      ]
-    );
+        styles: getMainClass(),
+        onClick: widget.disabled == false ? widget.onClick : () => {},
+        children: [
+          renderIcon('left'),
+          renderLoading(),
+          renderContent(),
+          renderIcon('right')
+        ]);
   }
 }

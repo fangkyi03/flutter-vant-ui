@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vant/component/actionSheet.dart';
 import 'package:flutter_vant/component/button.dart';
 import 'package:flutter_vant/component/calendar.dart';
+import 'package:flutter_vant/component/cell.dart';
+import 'package:flutter_vant/component/field.dart';
 import 'package:flutter_vant/component/notify.dart';
 import 'package:flutter_vant/component/passwordInput.dart';
 import 'package:flutter_vant/component/toast.dart';
 import 'package:rlstyles/main.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -33,24 +36,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   List<String> mSelect = [];
   getStyle() {
     return {
-      'main':{
+      'main': {
         // CssRule.justifyContent:'center',
         // CssRule.alignItems:'center',
-        CssRule.paddingTop:50,
-        CssRule.width:double.infinity,
-        CssRule.height:double.infinity,
-        CssRule.backgroundColor:'#f8f8f8'
+        CssRule.paddingTop: 50,
+        CssRule.width: double.infinity,
+        CssRule.height: double.infinity,
+        CssRule.backgroundColor: '#f8f8f8'
       }
     };
   }
 
   onConfirm(List<String> select) {
     setState(() {
-      mSelect = select;      
+      mSelect = select;
     });
   }
 
@@ -59,17 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onCalendar() {
-    VanCalendar.show(context: context,option: VanCalendarOption(
-      title: '日历',
-      onConfirm: onConfirm,
-      onSelect: onSelect,
-      rangColor: 'rgba(238,10,36,0.1)',
-      // type: 'asdasd',
-      // type: VanCalendarType.range,
-      // defaultDate: mSelect,
-      // defaultDate: ['2021-03-28','2021-04-01'],
-      confirmText: '点击确定'
-    ));
+    VanCalendar.show(
+        context: context,
+        option: VanCalendarOption(
+          title: '日历',
+          onConfirm: onConfirm,
+          onSelect: onSelect,
+          rangColor: 'rgba(238,10,36,0.1)',
+          // type: 'asdasd',
+          type: VanCalendarType.range,
+          // defaultDate: mSelect,
+          // defaultDate: ['2021-03-28','2021-04-01'],
+        ));
     // Toast.loading(context, VanToastOption(
     //   message: '测试',
     //   position: VanToastPosition.top,
@@ -90,24 +93,28 @@ class _MyHomePageState extends State<MyHomePage> {
     //   position: 'bottom',
     //   title:'测试',
     //   child: TextView('测试')
-    // ));   
+    // ));
   }
 
   onNotify() {
     VanNotify(
-      context: context,
-      option: VanNotifyOption(
-        message: '测试',
-        type: VanNotifyType.primary
-      )
-    );
+        context: context,
+        option: VanNotifyOption(message: '测试', type: VanNotifyType.primary));
   }
 
   renderBody() {
-    return Scaffold(body: View(
+    return Scaffold(
+        body: View(
       styles: getStyle()['main'],
       children: [
-        VanButton(text: '点击打开日历',onClick: onCalendar,block: true),
+        VanCell(
+          title: '测试',
+        ),
+        VanButton(
+            text: '点击打开日历',
+            onClick: onCalendar,
+            block: true,
+            type: VanButtonType.success),
       ],
     ));
   }
